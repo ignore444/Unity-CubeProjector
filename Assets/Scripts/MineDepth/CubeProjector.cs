@@ -15,6 +15,7 @@ public class CubeProjector : MonoBehaviour {
     private float m_aspect;
 
     private Matrix4x4 m_worldToProjector;
+    private MaterialPropertyBlock m_block = new MaterialPropertyBlock();
 
     // Use this for initialization
     void Start () {
@@ -35,6 +36,13 @@ public class CubeProjector : MonoBehaviour {
         m_worldToProjector = projector * this.transform.worldToLocalMatrix;
 
         MeshRenderer mr = this.GetComponent<MeshRenderer>();
-        mr.sharedMaterial.SetMatrix("_WorldToProjector", m_worldToProjector);
+        if (null == m_block)
+        {
+            m_block = new MaterialPropertyBlock();
+        }
+        m_block.SetMatrix("_WorldToProjector", m_worldToProjector);
+
+        MeshRenderer mr = this.GetComponent<MeshRenderer>();
+        mr.SetPropertyBlock(m_block);
     }
 }
