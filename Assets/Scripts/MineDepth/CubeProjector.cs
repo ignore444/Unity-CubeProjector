@@ -15,7 +15,7 @@ public class CubeProjector : MonoBehaviour {
     private float m_aspect;
 
     private Matrix4x4 m_worldToProjector;
-    private MaterialPropertyBlock m_block = new MaterialPropertyBlock();
+    private MaterialPropertyBlock m_block;
 
     // Use this for initialization
     void Start () {
