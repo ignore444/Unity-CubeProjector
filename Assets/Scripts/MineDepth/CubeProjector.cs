@@ -23,7 +23,8 @@ public class CubeProjector : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
         BoxCollider collider = this.GetComponent<BoxCollider>();
         this.m_size = collider.size.x / 2;
         this.m_nearClip = -collider.size.x / 2;
@@ -35,7 +36,6 @@ public class CubeProjector : MonoBehaviour {
 
         m_worldToProjector = projector * this.transform.worldToLocalMatrix;
 
-        MeshRenderer mr = this.GetComponent<MeshRenderer>();
         if (null == m_block)
         {
             m_block = new MaterialPropertyBlock();

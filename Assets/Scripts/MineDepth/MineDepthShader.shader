@@ -55,26 +55,27 @@
 				screenPos.xy = screenPos.xy / screenPos.w;
 
 				float depth = tex2D(_CameraDepthTexture, screenPos).r;
-				float displayDepth = Linear01Depth(depth) * _DepthScale;
 
 				//还原回-1 ,1 的clip控件坐标 inv ComputeScreenPos
 				fixed4 clipPos = fixed4(screenPos.x * 2 - 1, screenPos.y * 2 - 1, -depth * 2 + 1, 1);
-
-				//还原回相机空间
 				fixed4 cameraSpacePos = mul(unity_CameraInvProjection, clipPos);
-				//还原回世界空间
 				fixed4 worldSpacePos = mul(unity_MatrixInvV, cameraSpacePos);
 
-				//变换到自定义投影器投影空间
+				// Transform to custom projector projection space
 				fixed4 projectorPos = mul(_WorldToProjector, worldSpacePos);
 				projectorPos /= projectorPos.w;
 
-				fixed2 projUV = projectorPos.xy * 0.5 + 0.5;  //变换到uv坐标系
+				fixed2 projUV = projectorPos.xy * 0.5 + 0.5;  // -> uv coordinate system
 
 				fixed4 col = tex2D(_ProjectorTex, projUV);
 				fixed4 mask = tex2D(_ProjectorTexMask, projUV);
 
-				col.rgb =  lerp(fixed3(1, 1, 1), col.rgb, (1 - mask.r));
+				//col.rgb =  lerp(fixed3(1, 1, 1), col.rgb, (1 - mask.r));
+
+				if ( projUV.x < 0 || 1 < projUV.x || projUV.y < 0 || 1 < projUV.y)
+				{
+					col = 1;
+				}
 
 				return col;
 			}
